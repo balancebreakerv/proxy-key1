@@ -4,6 +4,12 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
+@app.get("/ip")
+async def get_ip():
+    async with httpx.AsyncClient() as client:
+        resp = await client.get("https://api.ipify.org?format=json")
+        return resp.json()
+
 @app.post("/{full_path:path}")
 async def proxy(full_path: str, request: Request):
     body = await request.json()
